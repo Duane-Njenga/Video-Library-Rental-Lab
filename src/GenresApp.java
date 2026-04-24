@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -14,6 +15,9 @@ public class GenresApp extends Application {
     @Override
     public void start(Stage stage) {
 
+        Text pgTitle = new Text("Movie Genres Menu");
+        pgTitle.setStyle("-fx-font: normal bold 20px 'serif'; -fx-alignment: center");
+
         Text text1 = new Text("Name:");
         Text text2 = new Text("Registered:");
         TextField textField1 = new TextField();
@@ -28,19 +32,31 @@ public class GenresApp extends Application {
         gridPane.setHgap(10);
         gridPane.setAlignment(Pos.CENTER);
 
-        gridPane.add(text1, 0, 0);
-        gridPane.add(textField1, 1, 0);
-        gridPane.add(button1, 1, 1);
+        GridPane.setColumnSpan(pgTitle, 2);
+        GridPane.setHalignment(pgTitle, HPos.CENTER);
 
-        gridPane.add(text2, 0, 2);
-        gridPane.add(comboBox, 1, 2);
-        gridPane.add(button2, 1, 3);
+        gridPane.add(pgTitle, 0, 0);
+        gridPane.add(text1, 0, 1);
+        gridPane.add(textField1, 1, 1);
+        gridPane.add(button1, 1, 2);
 
-        button1.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white; -fx-font-size: 13pt;");
-        button2.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white; -fx-font-size: 13pt;");
+        gridPane.add(text2, 0, 3);
+        gridPane.add(comboBox, 1, 3);
+        gridPane.add(button2, 1, 4);
+
+        String btnStyle = "-fx-background-color: CORNFLOWERBLUE; -fx-text-fill: white; -fx-font-size: 13pt; -fx-pref-width: 200px;";
+        String hoverStyle = "-fx-background-color: darkslateblue;-fx-text-fill: white; -fx-font-size: 13pt;-fx-pref-width: 200px;";
+
+        for (Button btn : new Button[]{button1, button2}) {
+            btn.setStyle(btnStyle);
+            btn.setOnMouseEntered(e -> btn.setStyle(hoverStyle));
+            btn.setOnMouseExited(e ->  btn.setStyle(btnStyle));
+        }
+
+        comboBox.setStyle("-fx-pref-width: 200px");
         text1.setStyle("-fx-font: normal bold 20px 'serif'");
         text2.setStyle("-fx-font: normal bold 20px 'serif'");
-        gridPane.setStyle("-fx-background-color: BEIGE;");
+        gridPane.setStyle("-fx-background-color: White;");
 
         Scene scene = new Scene(gridPane);
 
