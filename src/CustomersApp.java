@@ -43,7 +43,7 @@ public class CustomersApp extends Application {
         gridPane.add(pgTitle, 0, 0);
         gridPane.add(text1, 0, 1);
         gridPane.add(text2, 0, 2);
-        gridPane.add(text3, 0, 4);
+        gridPane.add(text3, 0, 3);
         gridPane.add(text4, 0, 5);
 
         gridPane.add(name, 1, 1);
@@ -61,9 +61,11 @@ public class CustomersApp extends Application {
             btn.setOnMouseEntered(e -> btn.setStyle(hoverStyle));
             btn.setOnMouseExited(e ->  btn.setStyle(btnStyle));
         }
+        for (TextField tf : new TextField[]{name, phone, email}) {
+            tf.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-style: solid;-fx-border-radius: 8px; -fx-background-radius: 8px;");
+        };
 
-//        genre.setStyle("-fx-pref-width: 200px");
-        registered.setStyle("-fx-pref-width: 200px");
+        registered.setStyle("-fx-pref-width: 200px; -fx-border-color: black; -fx-border-width: 2; -fx-border-style: solid;-fx-border-radius: 8px; -fx-background-radius: 8px;");
         text1.setStyle("-fx-font: normal bold 20px 'serif'");
         text2.setStyle("-fx-font: normal bold 20px 'serif'");
         text3.setStyle("-fx-font: normal bold 20px 'serif'");
