@@ -45,7 +45,7 @@ public class GenresApp extends Application {
         Scene scene = new Scene(gridPane);
 
 
-        stage.setTitle("Movie Library System");
+        stage.setTitle("Genres");
         stage.setScene(scene);
         stage.show();
     }
