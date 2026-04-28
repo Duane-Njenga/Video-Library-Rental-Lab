@@ -9,7 +9,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    private Stage currentStage = null;
+    private Stage currWindow = null;
     @Override
     public void start(Stage stage) {
 
@@ -70,14 +70,14 @@ public class Main extends Application {
         stage.show();
     }
     private void openWindow(Application app) {
-        if (currentStage != null && currentStage.isShowing()) {
-            currentStage.close();
+        if (currWindow != null && currWindow.isShowing()) {
+            currWindow.close();
         }
 
         try {
-            currentStage = new Stage();
-            app.start(currentStage);
-            currentStage.show();
+            currWindow = new Stage();
+            app.start(currWindow);
+            currWindow.show();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
