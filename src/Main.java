@@ -9,7 +9,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-
+    private Stage currentStage = null;
     @Override
     public void start(Stage stage) {
 
@@ -43,17 +43,22 @@ public class Main extends Application {
             btn.setOnMouseEntered(e -> btn.setStyle(hoverStyle));
             btn.setOnMouseExited(e ->  btn.setStyle(btnStyle));
         }
+//        button1.setOnAction(e -> openWindow(new GenresApp()));
+//
+//        button1.setOnAction(e -> {
+//            Stage newStage = new Stage();
+//            GenresApp genres = new GenresApp();
+//            genres.start(newStage);
+//            newStage.show();
+//        });
+//        button2.setOnAction(e -> {});
+//        button3.setOnAction(e -> {});
+//        button4.setOnAction(e -> {});
 
-        button1.setOnAction(e -> {
-            Stage newStage = new Stage();
-            GenresApp genres = new GenresApp();
-            genres.start(newStage);
-            newStage.show();
-        });
-        button2.setOnAction(e -> {});
-        button3.setOnAction(e -> {});
-
-        button4.setOnAction(e -> {});
+        button1.setOnAction(e -> openWindow(new GenresApp()));
+        button2.setOnAction(e -> openWindow(new MoviesApp()));
+        button3.setOnAction(e -> openWindow(new CustomersApp()));
+        button4.setOnAction(e -> openWindow(new RentalsApp()));
 
         gridPane.setStyle("-fx-background-color: WHITE;");
 
@@ -63,6 +68,19 @@ public class Main extends Application {
         stage.setTitle("Movie Library System");
         stage.setScene(scene);
         stage.show();
+    }
+    private void openWindow(Application app) {
+        if (currentStage != null && currentStage.isShowing()) {
+            currentStage.close();
+        }
+
+        try {
+            currentStage = new Stage();
+            app.start(currentStage);
+            currentStage.show();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
     public static void main(String[] args) {
