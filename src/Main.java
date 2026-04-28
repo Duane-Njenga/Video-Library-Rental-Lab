@@ -44,8 +44,16 @@ public class Main extends Application {
             btn.setOnMouseExited(e ->  btn.setStyle(btnStyle));
         }
 
+        button1.setOnAction(e -> {
+            Stage newStage = new Stage();
+            GenresApp genres = new GenresApp();
+            genres.start(newStage);
+            newStage.show();
+        });
+        button2.setOnAction(e -> {});
+        button3.setOnAction(e -> {});
 
-
+        button4.setOnAction(e -> {});
 
         gridPane.setStyle("-fx-background-color: WHITE;");
 

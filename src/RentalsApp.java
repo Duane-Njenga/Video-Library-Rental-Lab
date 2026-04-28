@@ -10,7 +10,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class CustomersApp extends Application {
+public class RentalsApp extends Application {
 
     @Override
     public void start(Stage stage) {
@@ -18,20 +18,23 @@ public class CustomersApp extends Application {
         Text pgTitle = new Text("Customers Menu");
         pgTitle.setStyle("-fx-font: normal bold 20px 'serif'; -fx-alignment: center");
 
-        Text text1 = new Text("Name:");
-        Text text2 = new Text("Phone:");
-        Text text3 = new Text("Email:");
-        Text text4 = new Text("Registered:");
+        Text text1 = new Text("Customer:");
+        Text text2 = new Text("Genre:");
+        Text text3 = new Text("Movies:");
+        Text text4 = new Text("Borrowed:");
+        Text text5 = new Text("Returned:");
 
-        TextField name = new TextField();
-        TextField phone = new TextField();
-        TextField email = new TextField();
-        ComboBox<String> registered = new ComboBox<>();
-        Button button1 = new Button("Save Customer");
-        Button button2 = new Button("Remove Customer");
+        ComboBox<String> customer = new ComboBox<>();
+        ComboBox<String> genre = new ComboBox<>();
+        ComboBox<String> movies = new ComboBox<>();
+        ComboBox<String> borrowed = new ComboBox<>();
+        ComboBox<String> returned = new ComboBox<>();
+
+
+        Button button1 = new Button("Save Rental");
+        Button button2 = new Button("Return Movie");
 
         GridPane gridPane = new GridPane();
-
         gridPane.setMinSize(600, 400);
         gridPane.setPadding(new Insets(10, 10, 10, 10));
         gridPane.setVgap(10);
@@ -46,13 +49,15 @@ public class CustomersApp extends Application {
         gridPane.add(text2, 0, 2);
         gridPane.add(text3, 0, 3);
         gridPane.add(text4, 0, 5);
+        gridPane.add(text5, 0, 7);
 
-        gridPane.add(name, 1, 1);
-        gridPane.add(phone, 1, 2);
-        gridPane.add(email, 1, 3);
+        gridPane.add(customer, 1, 1);
+        gridPane.add(genre, 1, 2);
+        gridPane.add(movies, 1, 3);
         gridPane.add(button1, 1, 4);
-        gridPane.add(registered, 1, 5);
+        gridPane.add(borrowed, 1, 5);
         gridPane.add(button2, 1, 6);
+        gridPane.add(returned, 1, 7);
 
         String btnStyle = "-fx-background-color: CORNFLOWERBLUE; -fx-text-fill: white; -fx-font-size: 13pt; -fx-pref-width: 200px;-fx-background-radius: 8px;";
         String hoverStyle = "-fx-background-color: darkslateblue;-fx-text-fill: white; -fx-font-size: 13pt;-fx-pref-width: 200px;-fx-background-radius: 8px;";
@@ -62,15 +67,14 @@ public class CustomersApp extends Application {
             btn.setOnMouseEntered(e -> btn.setStyle(hoverStyle));
             btn.setOnMouseExited(e ->  btn.setStyle(btnStyle));
         }
-        for (TextField tf : new TextField[]{name, phone, email}) {
-            tf.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-style: solid;-fx-border-radius: 8px; -fx-background-radius: 8px;");
+        for (ComboBox<?> cb : new ComboBox[]{customer, genre, movies, borrowed, returned}) {
+        cb.setStyle("-fx-pref-width: 200px; -fx-border-color: black; -fx-border-width: 2; -fx-border-style: solid;-fx-border-radius: 8px; -fx-background-radius: 8px;-fx-background-color: White;");
         };
+        for(Text t : new Text[]{text1, text2, text3, text4, text5}) {
+            t.setStyle("-fx-font: normal bold 20px 'serif'");
+        };
+//        registered.setStyle("-fx-pref-width: 200px; -fx-border-color: black; -fx-border-width: 2; -fx-border-style: solid;-fx-border-radius: 8px; -fx-background-radius: 8px;");
 
-        registered.setStyle("-fx-pref-width: 200px; -fx-border-color: black; -fx-border-width: 2; -fx-border-style: solid;-fx-border-radius: 8px; -fx-background-radius: 8px;");
-        text1.setStyle("-fx-font: normal bold 20px 'serif'");
-        text2.setStyle("-fx-font: normal bold 20px 'serif'");
-        text3.setStyle("-fx-font: normal bold 20px 'serif'");
-        text4.setStyle("-fx-font: normal bold 20px 'serif'");
 
 
         gridPane.setStyle("-fx-background-color: White;");
