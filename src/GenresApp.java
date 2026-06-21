@@ -9,15 +9,25 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import vls.VLSService;
 
 public class GenresApp extends Application {
 
+    private static final String HOST = "localhost";
+    private VLSService service;
+
+    private void connect() {
+        try {
+            Registry r = LocateRegistry.getRegistry(HOST, 1099);
+            service = (VLSService) r.lookup("VLSService");
+        } catch (Exception e) { System.out.println("RMI Error: " + e.getMessage()); }
+    }
+
     @Override
     public void start(Stage stage) {
+        connect();
 
         Text pgTitle = new Text("Movie Genres Menu");
         pgTitle.setStyle("-fx-font: normal bold 20px 'serif'; -fx-alignment: center");
@@ -62,8 +72,34 @@ public class GenresApp extends Application {
         text2.setStyle("-fx-font: normal bold 20px 'serif'");
         gridPane.setStyle("-fx-background-color: White;");
 
-        Scene scene = new Scene(gridPane);
+        try { comboBox.getItems().setAll(service.getGenres()); }
+        catch (Exception ex) { System.out.println(ex.getMessage()); }
 
+        button1.setOnAction(e -> {
+            String val = textField1.getText().trim();
+            if (val.isEmpty()) return;
+            try {
+                service.addGenre(val);
+                comboBox.getItems().add(val);
+                textField1.clear();
+            } catch (Exception ex) { System.out.println(ex.getMessage()); }
+        });
+
+        button2.setOnAction(e -> {
+            String val = comboBox.getValue();
+            if (val == null) return;
+            new Thread(() -> {
+                try {
+                    System.out.println(val);
+
+                    service.removeGenre(val);
+                    javafx.application.Platform.runLater(() -> comboBox.getItems().remove(val));
+                    comboBox.setValue(null);
+                } catch (Exception ex) { System.out.println(ex.getMessage()); }
+            }).start();
+        });
+
+        Scene scene = new Scene(gridPane);
 
         stage.setTitle("Genres");
         stage.setScene(scene);

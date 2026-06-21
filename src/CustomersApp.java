@@ -9,11 +9,25 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import vls.VLSService;
 
 public class CustomersApp extends Application {
 
+    private static final String HOST = "localhost";
+    private VLSService service;
+
+    private void connect() {
+        try {
+            Registry r = LocateRegistry.getRegistry(HOST, 1099);
+            service = (VLSService) r.lookup("VLSService");
+        } catch (Exception e) { System.out.println("RMI Error: " + e.getMessage()); }
+    }
+
     @Override
     public void start(Stage stage) {
+        connect();
 
         Text pgTitle = new Text("Customers Menu");
         pgTitle.setStyle("-fx-font: normal bold 20px 'serif'; -fx-alignment: center");
@@ -56,6 +70,38 @@ public class CustomersApp extends Application {
 
         String btnStyle = "-fx-background-color: CORNFLOWERBLUE; -fx-text-fill: white; -fx-font-size: 13pt; -fx-pref-width: 200px;-fx-background-radius: 8px;";
         String hoverStyle = "-fx-background-color: darkslateblue;-fx-text-fill: white; -fx-font-size: 13pt;-fx-pref-width: 200px;-fx-background-radius: 8px;";
+
+
+        try { registered.getItems().setAll(service.getCustomers()); }
+        catch (Exception ex) { System.out.println(ex.getMessage()); }
+
+        button1.setOnAction(e -> {
+            String namefield = name.getText().trim();
+            String phonefield = phone.getText().trim();
+            String emailfield = email.getText().trim();
+
+
+            try {
+                service.addCustomer(namefield, phonefield, emailfield);
+                registered.getItems().add(namefield);
+                name.clear(); phone.clear(); email.clear();
+            } catch (Exception ex) { System.out.println(ex.getMessage()); }
+        });
+
+        button2.setOnAction(e -> {
+            String val = registered.getValue();
+            if (val == null) return;
+            new Thread(() -> {
+                try {
+
+                    service.removeCustomer(val);
+                    javafx.application.Platform.runLater(() -> registered.getItems().remove(val));
+                    registered.setValue(null);
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }).start();
+        });
 
         for (Button btn : new Button[]{button1, button2}) {
             btn.setStyle(btnStyle);

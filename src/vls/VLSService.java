@@ -10,6 +10,7 @@ public interface VLSService extends Remote {
     void removeGenre(String name) throws RemoteException;
 
     void addMovie(String title, String genre) throws RemoteException;
+    List<String> getMovies() throws RemoteException;
     List<String> getMoviesByGenre(String genre) throws RemoteException;
     void removeMovie(String title) throws RemoteException;
 
@@ -21,4 +22,5 @@ public interface VLSService extends Remote {
     List<String> getBorrowedMovies(String customerName) throws RemoteException;
     void returnMovie(String customerName, String movieTitle) throws RemoteException;
     List<String> getReturnedMovies(String customerName) throws RemoteException;
+
 }

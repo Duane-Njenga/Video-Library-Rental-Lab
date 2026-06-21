@@ -33,9 +33,13 @@ public class VLSServiceImpl extends UnicastRemoteObject implements VLSService {
     }
 
     public void removeGenre(String name) throws RemoteException {
-        try (Connection c = connect(); PreparedStatement ps = c.prepareStatement("UPDATE genres SET isactive=0 WHERE genre=?")) {
-            ps.setString(1, name); ps.executeUpdate();
-        } catch (SQLException e) { throw new RemoteException(e.getMessage()); }
+        try (
+                Connection c = connect();
+                PreparedStatement ps = c.prepareStatement("UPDATE genres SET isactive=0 WHERE genre=?")) {
+                ps.setString(1, name);
+                ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RemoteException(e.getMessage()); }
     }
 
     public void addMovie(String title, String genre) throws RemoteException {
@@ -43,6 +47,17 @@ public class VLSServiceImpl extends UnicastRemoteObject implements VLSService {
                 "INSERT INTO movies(genre_id,title,isactive) VALUES((SELECT id FROM genres WHERE genre=?),?,1)")) {
             ps.setString(1, genre); ps.setString(2, title); ps.executeUpdate();
         } catch (SQLException e) { throw new RemoteException(e.getMessage()); }
+    }
+
+    public List<String> getMovies() throws RemoteException {
+        List<String> list = new ArrayList<>();
+        try (Connection c = connect();
+             ResultSet rs = c.createStatement().executeQuery("SELECT title FROM movies WHERE isactive=1"))
+        {
+            System.out.println(rs);
+            while (rs.next()) list.add(rs.getString("title"));
+        } catch (SQLException e) { throw new RemoteException(e.getMessage()); }
+        return list;
     }
 
     public List<String> getMoviesByGenre(String genre) throws RemoteException {
@@ -63,16 +78,27 @@ public class VLSServiceImpl extends UnicastRemoteObject implements VLSService {
     }
 
     public void addCustomer(String fullname, String phone, String email) throws RemoteException {
-        try (Connection c = connect(); PreparedStatement ps = c.prepareStatement(
-                "INSERT INTO clients(fullname,phone,email,isactive) VALUES(?,?,?,1)")) {
-            ps.setString(1, fullname); ps.setString(2, phone); ps.setString(3, email); ps.executeUpdate();
+        try (
+                Connection c = connect();
+                PreparedStatement ps = c.prepareStatement(
+                "INSERT INTO clients(fullname,phone,email,isactive) VALUES(?,?,?,1)"))
+        {
+            ps.setString(1, fullname);
+            ps.setString(2, phone);
+            ps.setString(3, email);
+            ps.executeUpdate();
         } catch (SQLException e) { throw new RemoteException(e.getMessage()); }
     }
 
     public List<String> getCustomers() throws RemoteException {
         List<String> list = new ArrayList<>();
-        try (Connection c = connect(); ResultSet rs = c.createStatement().executeQuery("SELECT fullname FROM clients WHERE isactive=1")) {
-            while (rs.next()) list.add(rs.getString("fullname"));
+        try (
+                Connection c = connect();
+                ResultSet rs = c.createStatement().executeQuery("SELECT fullname FROM clients WHERE isactive=1"))
+        {
+            while (rs.next()) {
+                list.add(rs.getString("fullname"));
+            }
         } catch (SQLException e) { throw new RemoteException(e.getMessage()); }
         return list;
     }
